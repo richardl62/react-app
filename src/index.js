@@ -8,7 +8,7 @@ function greet(name) {
 class App extends React.Component {
   render() {
 
-    const people = ['Jill', 'Jamie', 'Bobby' ];
+    const people = ['Jill', 'Jamie', 'Bobby', 'Dave' ];
 
     return (
       <div className="App">
