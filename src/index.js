@@ -37,29 +37,22 @@ class ErrorBoundary extends React.Component {
   }  
 }
 
-function numberAndSuit(name) {
-  const number = name.slice(0,-1).toUpperCase();
-  const suit = name.slice(-1).toUpperCase();
-
-  return [number, suit];
+function cardImageTag(name) {
+  // const number = name.slice(0,-1).toUpperCase();
+  // const suit = name.slice(-1).toUpperCase();
+  const image = require("./cards/HEART-3.svg")
+  return  <img src={image} alt="boohoo" />
 }
 
-function isRed(suit) {
-  const redSuits = ["D", "H"];
-  return redSuits.includes(suit.toUpperCase()); 
 
-} 
 class Card extends React.Component {
 
   render() {
-    const [number, suit] = numberAndSuit(this.props.value);
-    const cardClass = isRed(suit) ? "redCard" : "blackCard";
-
     return (
-      <div {... addClassName(this.props, cardClass)} > 
-        <div> {number} </div>
-        <div> {suit} </div>
-      </div>);
+      <div {...addClassName(this.props, "card")}>
+        {cardImageTag(this.props.value)}
+      </div>
+    );
   }
 }
 
