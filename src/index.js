@@ -2,6 +2,7 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Draggable from 'react-draggable'; // The default
+const CardSvgs = require.context ( './cards', false, /\.svg$/ )
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -37,20 +38,64 @@ class ErrorBoundary extends React.Component {
   }  
 }
 
-function cardImageTag(name) {
-  // const number = name.slice(0,-1).toUpperCase();
-  // const suit = name.slice(-1).toUpperCase();
-  const image = require("./cards/HEART-3.svg")
-  return  <img src={image} alt="boohoo" />
+class CardValue {
+  constructor(briefName) {  // briefName is "1c", "qS" etc.
+    const r = briefName.slice(0, -1).toLowerCase();
+    const s = briefName.slice(-1).toLowerCase();
+
+    const royal = {
+      j: 'jack',
+      q: 'queen',
+      k: 'king',
+    }
+
+    if(!isNaN(parseInt(r)) || r === "0") {
+      this._rank = r;
+    } else if(royal[r]) {
+      this._rank = royal[r];
+    } else {
+      throw Error(`Rank not recongised in ${briefName}`);
+    }
+
+    const suits = {
+      c: 'club',
+      d: 'diamond',
+      h: 'heart',
+      s: 'spade',
+    }
+
+    this._suit = suits[s];
+    if(!this._suit) {
+      throw Error(`Suit not recongised in ${briefName}`);
+    }
+
+    Object.freeze(this);
+  }
+
+  get rank() {return this._rank;}
+  get suit() {return this._suit;}
+  
+  svg() {
+    const name = `${this._suit}-${this._rank}`.toUpperCase();
+    const path = `./${name}.svg`
+
+    return CardSvgs(path);
+  }
+
+  longName() {
+    return `${this._rank} of ${this._suit}s`;
+  }
 }
 
 
 class Card extends React.Component {
 
   render() {
+    const c = new CardValue(this.props.value);
+
     return (
       <div {...addClassName(this.props, "card")}>
-        {cardImageTag(this.props.value)}
+        <img src={c.svg()} alt={c.longName()} />
       </div>
     );
   }
