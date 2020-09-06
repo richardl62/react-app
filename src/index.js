@@ -62,9 +62,8 @@ class Hand extends React.Component {
 class App extends React.Component {
   render() {
 
-    const hand1 = ['1c', '10d', '3H', 'qs' ];
-
-    const hand2 = ['1d', 'Jc', '4s', 'ks' ];
+    const hand1 = ['joker', 'joker-2']; //[33, 8, 51, 12 ];
+    const hand2 = ['1-c', '10-d', '3-Heart', 'q-spades'];
     
     return (
       <ErrorBoundary>
