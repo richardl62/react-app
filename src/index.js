@@ -59,17 +59,54 @@ class Hand extends React.Component {
   }
 }
 
+// Copied from richardl62.github.io\games\lib\tools\tools.js
+function shuffleArray(array) {
+  // From https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+// Work in progress
+class Deck {
+    constructor() {
+      this._cards = []; 
+      for(let i = 0; i < 52; ++i) {
+        this._cards.push(i);
+      }
+    }
+
+    addJokers(num=2) {
+      for(let i = 0; i < num; ++i) {
+        this._cards.push('joker');
+      }
+    }
+
+    shuffle() {
+      shuffleArray(this._cards);
+    }
+
+    draw(num=1) {
+      return this._cards.splice(0, num);
+    }
+}
+
 class App extends React.Component {
   render() {
 
-    const hand1 = ['joker', 'joker-2']; //[33, 8, 51, 12 ];
-    const hand2 = ['1-c', '10-d', '3-Heart', 'q-spades'];
+    let d = new Deck();
+    d.addJokers();
+    d.shuffle();
+    
+    const hand1 = d.draw(6);
+    const hand2 = d.draw(6);
     
     return (
       <ErrorBoundary>
         <div className="game">
           <Hand key="hand1" cards={hand1}/>
-          <Hand key="shared" />
+          <div className="playing-area" />
           <Hand key="hand2" cards={hand2}/>
         </div>
       </ErrorBoundary>
