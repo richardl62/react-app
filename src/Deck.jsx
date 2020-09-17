@@ -9,17 +9,20 @@ function shuffleArray(array) {
     }
   }
 
+const deckSize = 52; // Excluded Jokers
+const jokerIndex = deckSize;
+
 class Deck {
   constructor() {
     this._cards = [];
-    for (let i = 0; i < 52; ++i) {
+    for (let i = 0; i < deckSize; ++i) {
       this._cards.push(i);
     }
   }
 
   addJokers(num = 2) {
     for (let i = 0; i < num; ++i) {
-      this._cards.push('joker');
+      this._cards.push(jokerIndex);
     }
   }
 

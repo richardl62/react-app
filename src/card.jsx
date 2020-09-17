@@ -123,21 +123,32 @@ class CardValue {
 }
 
 
-class Card extends React.Component {
+class Card extends React.PureComponent {
 
   render() {
-    const c = new CardValue(this.props.value);
+    const {value, index} = this.props;
+    // console.log(value, index);
+
+    const c = new CardValue(value);
     if(!c.isSet()) {
-      throw Error(`Unrecognised card value:${this.props.value}:`)
+      throw Error(`Unrecognised card value:${value}:`)
     }
 
     return (
-      <Draggable>
-      {provided => (
-        <div className="card">
-          <img src={cardSvg(c)} alt={c.longName()} />
-        </div>
-      )}
+      <Draggable
+        draggableId={value.toString()}
+        index={index}
+      >
+        {provided => (
+          <div className="card"
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            id={value}
+          >
+            <img src={cardSvg(c)} alt={c.longName()} />
+          </div>
+        )}
       </Draggable>
     );
   }
