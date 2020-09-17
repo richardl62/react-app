@@ -1,4 +1,5 @@
 import React from 'react';
+import {Draggable} from 'react-beautiful-dnd';
 
 // Kludge? CardSvgs is defined here to keep imports/requires at the top of the file
 // But if is not use until a fair but futher down in the file
@@ -131,27 +132,15 @@ class Card extends React.Component {
     }
 
     return (
-      <div {...addClassName(this.props, "card")}>
-        <img src={cardSvg(c)} alt={c.longName()} />
-      </div>
+      <Draggable>
+      {provided => (
+        <div className="card">
+          <img src={cardSvg(c)} alt={c.longName()} />
+        </div>
+      )}
+      </Draggable>
     );
   }
 }
 
-// TO DO: Move out of here
-function addClassName(props, name) {
-  let new_props = { ...props }; // Independent copy
-
-  if (props.className) {
-    new_props.className += " " + name;
-  } else {
-    new_props.className = name
-  }
-
-  return new_props;
-}
-
-export {
-  Card,
-  addClassName, // kludge
-};
+export {Card};

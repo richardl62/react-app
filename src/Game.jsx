@@ -1,6 +1,7 @@
 import React from 'react';
 import Hand from './Hand';
 import Deck from './Deck';
+import {DragDropContext} from 'react-beautiful-dnd';
 
 class Game extends React.Component {
   render() {
@@ -13,11 +14,13 @@ class Game extends React.Component {
     const hand2 = d.draw(6);
 
     return (
-      <div className="game">
-        <Hand key="hand1" cards={hand1} />
-        <div className="playing-area" />
-        <Hand key="hand2" cards={hand2} />
-      </div>
+        <DragDropContext>
+            <div className="game">
+                <Hand key="hand1" cards={hand1} />
+                <div className="playing-area" />
+                <Hand key="hand2" cards={hand2} />
+            </div>
+        </DragDropContext>
     );
   }
 }
