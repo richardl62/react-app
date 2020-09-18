@@ -12,7 +12,7 @@ function shuffleArray(array) {
 const deckSize = 52; // Excluded Jokers
 const jokerIndex = deckSize;
 
-class Deck {
+class CoreDeck {
   constructor() {
     this._cards = [];
     for (let i = 0; i < deckSize; ++i) {
@@ -35,4 +35,4 @@ class Deck {
   }
 };
 
-export default Deck;
+export { CoreDeck } ;

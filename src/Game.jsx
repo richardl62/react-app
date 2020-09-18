@@ -1,6 +1,6 @@
 import React from 'react';
-import {Hand, HandData} from './Hand';
-import Deck from './Deck';
+import { RenderHand } from './render';
+import { CoreHand, CoreDeck } from './core';
 import {DragDropContext} from 'react-beautiful-dnd';
 
 class Game extends React.Component {
@@ -8,7 +8,7 @@ class Game extends React.Component {
     constructor() {
         super();
 
-        this._deck = new Deck();
+        this._deck = new CoreDeck();
         this.state = {}
         this.state = {};
 
@@ -17,9 +17,9 @@ class Game extends React.Component {
         d.addJokers();
         d.shuffle();
 
-        this.state.player1 = new HandData(d.draw(6));
-        this.state.commonArea = new HandData([]);
-        this.state.player2 = new HandData(d.draw(6));
+        this.state.player1 = new CoreHand(d.draw(6));
+        this.state.commonArea = new CoreHand([]);
+        this.state.player2 = new CoreHand(d.draw(6));
     }
 
     onDragEnd = result => {
@@ -50,7 +50,7 @@ class Game extends React.Component {
 
         let hands = [];
         for(let name in this.state) {
-            let h = <Hand id={name} key={name} cards={this.state[name].cardIds} />
+            let h = <RenderHand id={name} key={name} cards={this.state[name].cardIds} />
             hands.push(h);
          }
         return (

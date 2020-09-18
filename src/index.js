@@ -1,7 +1,7 @@
 import './main.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Game from './Game';
+import Game from './game';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
