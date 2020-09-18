@@ -7,6 +7,20 @@ const suitNames = [['club', 'clubs', 'c'], ['diamond', 'diamonds', 'd'], ['heart
 ['spade', 'spades', 's']];
 const jokerNames = [['joker-1', 'joker', 'j-1', 'j'], ['joker-2', 'j-2']];
 
+const deckSize = 52; // Excluded Jokers
+
+const fullPack = (() => {
+    let array = [];
+    for (let i = 0; i < deckSize; ++i) {
+        array.push(i);
+    }
+    return array;
+})();
+
+function makeJoker(jokerNumber) {
+    return "joker" + jokerNumber;
+}
+
 class NamesAndIndices {
 
     constructor(names) {
@@ -101,4 +115,4 @@ class CoreCard {
     }
 }
 
-export { CoreCard };
+export { CoreCard, fullPack, makeJoker };
