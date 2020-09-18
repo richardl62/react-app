@@ -3,7 +3,11 @@ import { fullPack, makeJoker } from './core_card';
 class CoreDeck {
   constructor() {
     this._nextJoker = 0;
-    this._cards = [...fullPack];
+    this._cards = [];
+  }
+
+  addPack() {
+    this._cards.push(...fullPack());
   }
 
   addJokers(num = 2) {

@@ -3,17 +3,16 @@
 const CardSvgs = require.context('./svgs', false, /\.svg$/);
 
 function cardSvg(coreCard) {
-    let type, index;
+    let fileName;
     if (coreCard.isJoker()) {
-        type = "JOKER";
-        index = coreCard.joker.index;
+        fileName = "JOKER-1";
     } else {
-        type = coreCard.suit.name.toUpperCase();
-        index = coreCard.rank.index;
+        const suit = coreCard.suitName().toUpperCase();
+        const index= coreCard.rankIndex() + 1;
+        fileName = `${suit}-${index}`;
     }
 
-    const path = `./${type}-${index + 1}.svg`;
-    return CardSvgs(path);
+    return CardSvgs(`./${fileName}.svg`);
 }
 
 export { cardSvg };

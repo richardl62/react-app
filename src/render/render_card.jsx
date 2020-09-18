@@ -1,23 +1,16 @@
 import React from 'react';
 import {Draggable} from 'react-beautiful-dnd';
-import { CoreCard } from '../core'; // Should not be needed
 import { cardSvg } from './svgs';
 
 
 class RenderCard extends React.PureComponent {
 
   render() {
-    const {value, index} = this.props;
-    // console.log(value, index);
-
-    const c = new CoreCard(value);
-    if(!c.isSet()) {
-      throw Error(`Unrecognised card value:${value}:`)
-    }
+    const {coreCard, index} = this.props;
 
     return (
       <Draggable
-        draggableId={value.toString()}
+        draggableId={coreCard.id().toString()}
         index={index}
       >
         {provided => (
@@ -25,9 +18,9 @@ class RenderCard extends React.PureComponent {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            id={value}
+            //id={value}
           >
-            <img src={cardSvg(c)} alt={c.longName()} />
+            <img src={cardSvg(coreCard)} alt={coreCard.name()} />
           </div>
         )}
       </Draggable>

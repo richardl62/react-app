@@ -4,7 +4,7 @@ import { RenderCard } from './render_card';
 
 class RenderHand extends React.Component {
     render() {
-        const { cards, id } = this.props;
+        const { coreHand, id } = this.props;
 
         return (
             <Droppable
@@ -16,8 +16,8 @@ class RenderHand extends React.Component {
                         ref={provided.innerRef}
                         {...provided.droppableProp}
                     >
-                        {cards.map((card,index) =>
-                            <RenderCard value={card} key={card} index={index} />
+                        {coreHand.cards.map((coreCard,index) =>
+                            <RenderCard coreCard={coreCard} key={coreCard.name()} index={index} />
                         )}
                         {provided.placeholder}
                     </div>

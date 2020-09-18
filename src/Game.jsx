@@ -1,6 +1,6 @@
 import React from 'react';
 import { RenderHand } from './render';
-import { CoreHand, CoreDeck } from './core';
+import { CoreHand, CoreDeck, CoreCard } from './core';
 import {DragDropContext} from 'react-beautiful-dnd';
 
 class Game extends React.Component {
@@ -9,17 +9,15 @@ class Game extends React.Component {
         super();
 
         this._deck = new CoreDeck();
-        this.state = {}
-        this.state = {};
-
-
         let d = this._deck;
-        d.addJokers();
+        d.addPack();
+        d.addJokers(2);
         d.shuffle();
-
-        this.state.player1 = new CoreHand(d.draw(6));
-        this.state.commonArea = new CoreHand([]);
-        this.state.player2 = new CoreHand(d.draw(6));
+        this.state = {
+            player1: new CoreHand(d.draw(6)),
+            // commonArea: new CoreHand(),
+            player2: new CoreHand(d.draw(6)),
+        }
     }
 
     onDragEnd = result => {
@@ -41,22 +39,25 @@ class Game extends React.Component {
 
         newState[source.droppableId].removeAt(source.index);
         newState[destination.droppableId].addAt(destination.index, 
-            parseInt(draggableId));
+            new CoreCard(parseInt(draggableId)));
 
         this.setState(newState);
     }
 
     render() {
 
-        let hands = [];
-        for(let name in this.state) {
-            let h = <RenderHand id={name} key={name} cards={this.state[name].cardIds} />
-            hands.push(h);
-         }
+        const hands = Object.entries(this.state).map(entry => {
+            const [name, coreHand] = entry;
+            return <RenderHand id={name} key={name} coreHand={coreHand} />
+        });
+
+
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <div className="game"> 
-                    { [...hands]}
+                    {
+                    [...hands]
+                    }
                 </div>
             </DragDropContext>
         );
