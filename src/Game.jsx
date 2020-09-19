@@ -15,7 +15,7 @@ class Game extends React.Component {
         d.shuffle();
         this.state = {
             player1: new CoreHand(d.draw(6)),
-            // commonArea: new CoreHand(),
+            commonArea: new CoreHand(),
             player2: new CoreHand(d.draw(6)),
         }
 
