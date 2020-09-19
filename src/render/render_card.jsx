@@ -1,13 +1,16 @@
 import React from 'react';
 import {Draggable} from 'react-beautiful-dnd';
-import { cardSvg } from './svgs';
+import { cardSvg, cardBackSvg } from './svgs';
 
 
 class RenderCard extends React.PureComponent {
 
   render() {
-    const {coreCard, index} = this.props;
+    const {coreCard, index, showBack} = this.props;
 
+    const svg = showBack ? cardBackSvg : cardSvg(coreCard);
+    const alt = showBack ? "card back" : coreCard.name(); 
+ 
     return (
       <Draggable
         draggableId={coreCard.id().toString()}
@@ -18,9 +21,8 @@ class RenderCard extends React.PureComponent {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            //id={value}
-          >
-            <img src={cardSvg(coreCard)} alt={coreCard.name()} />
+          >       
+            <img width="100%" height="auto" src={svg} alt={alt} />
           </div>
         )}
       </Draggable>

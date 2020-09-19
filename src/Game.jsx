@@ -18,6 +18,9 @@ class Game extends React.Component {
             // commonArea: new CoreHand(),
             player2: new CoreHand(d.draw(6)),
         }
+
+        this.state.player2.showBacks = true;
+
     }
 
     onDragEnd = result => {
@@ -48,7 +51,7 @@ class Game extends React.Component {
 
         const hands = Object.entries(this.state).map(entry => {
             const [name, coreHand] = entry;
-            return <RenderHand id={name} key={name} coreHand={coreHand} />
+            return <RenderHand id={name} key={name} coreHand={coreHand} showBack={coreHand.showBacks} />
         });
 
 

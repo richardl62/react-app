@@ -1,6 +1,7 @@
 class CoreHand {
     constructor(cards) {
         this._cards = cards ? cards : [];
+        this._showBacks = false;
         Object.seal(this);
     }
 
@@ -14,9 +15,15 @@ class CoreHand {
         this._cards.splice(index, 0, coreCard);
     }
 
-    // Make an independant copy of this class
+    get showBacks() {return this._showBacks;}
+    set showBacks(show) {this._showBacks = show;}
+    
+    // Make an independent copy of this class
     copy() {
-        return new CoreHand(this._cards.map(c=>c.copy()));
+        let cp = new CoreHand(this._cards.map(c=>c.copy()));
+        cp.showBacks = this.showBacks;
+        
+        return cp;
     }
 }
 

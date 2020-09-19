@@ -12,6 +12,7 @@ body {
 .card {
   display: inline-block;
   margin: 2px;
+  width: 200px;
 }
 
 
