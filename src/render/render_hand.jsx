@@ -17,7 +17,7 @@ class RenderHand extends React.Component {
                         {...provided.droppableProp}
                     >
                         {coreHand.cards.map((coreCard,index) =>
-                            <RenderCard coreCard={coreCard} key={coreCard.name()} index={index} showBack={this.props.showBack} />
+                            <RenderCard coreCard={coreCard} key={coreCard.id} index={index} showBack={this.props.showBack} />
                         )}
                         {provided.placeholder}
                     </div>

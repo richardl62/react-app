@@ -1,6 +1,6 @@
 import React from 'react';
 import { RenderHand } from './render';
-import { CoreHand, CoreDeck, CoreCard } from './core';
+import { CoreHand, CoreDeck, CoreCard, CoreCardGenerator } from './core';
 import {DragDropContext} from 'react-beautiful-dnd';
 
 class Game extends React.Component {
@@ -8,19 +8,22 @@ class Game extends React.Component {
     constructor() {
         super();
 
+        this._generator = new CoreCardGenerator();
         this._deck = new CoreDeck();
+
+        let gen = this._generator;
         let d = this._deck;
-        d.addPack();
-        d.addJokers(2);
+
+        d.add(gen.decks(2), gen.jokers(4));
         d.shuffle();
+
         this.state = {
-            player1: new CoreHand(d.draw(6)),
+            player1: new CoreHand(d.draw(8)),
             commonArea: new CoreHand(),
-            player2: new CoreHand(d.draw(6)),
+            player2: new CoreHand(d.draw(8)),
         }
 
         this.state.player2.showBacks = true;
-
     }
 
     onDragEnd = result => {

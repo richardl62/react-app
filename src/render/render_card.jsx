@@ -16,7 +16,7 @@ class RenderCard extends React.PureComponent {
  
     return (
       <Draggable
-        draggableId={coreCard.id().toString()}
+        draggableId={coreCard.id.toString()}
         index={index}
       >
         {provided => (

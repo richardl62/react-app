@@ -1,19 +1,15 @@
-import { fullPack, makeJoker } from './core_card';
-
 class CoreDeck {
   constructor() {
-    this._nextJoker = 0;
     this._cards = [];
   }
 
-  addPack() {
-    this._cards.push(...fullPack());
-  }
-
-  addJokers(num = 2) {
-    for (let i = 0; i < num; ++i) {
-      this._cards.push(makeJoker(this._nextJoker));
-      ++this._nextJoker;
+  add(...toAdd) {
+    for (let item of toAdd) {
+      if (Array.isArray(item)) {
+        this._cards.push(...item);
+      } else {
+        this._cards.push(item);
+      }
     }
   }
 
@@ -28,7 +24,7 @@ class CoreDeck {
       }
   }
 
-  draw(num = 1) {
+  draw(num) {
     return this._cards.splice(0, num);
   }
 };

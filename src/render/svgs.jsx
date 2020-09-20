@@ -3,13 +3,15 @@
 const CardSvgs = require.context('./svgs', false, /\.svg$/);
 const cardBackSvg = CardSvgs('./BACK.svg')
 
+const suitNames = ['CLUB', 'DIAMOND', 'HEART', 'SPADE'];
+
 function cardSvg(coreCard) {
     let fileName;
-    if (coreCard.isJoker()) {
+    if (coreCard.isJoker) {
         fileName = "JOKER-1";
     } else {
-        const suit = coreCard.suitName().toUpperCase();
-        const index= coreCard.rankIndex() + 1;
+        const suit = suitNames[coreCard.suitIndex];
+        const index= coreCard.rankIndex + 1;
         fileName = `${suit}-${index}`;
     }
 
