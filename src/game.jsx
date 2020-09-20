@@ -1,69 +1,67 @@
 import React from 'react';
-import { CoreCard, CoreCardGenerator, CoreCardSet } from './core';
+import { CoreCardGenerator, CoreCardSet } from './core';
 import { RenderCardSet } from './render';
-import {DragDropContext} from 'react-beautiful-dnd';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 class Game extends React.Component {
 
     constructor() {
         super();
+        this.state = {}
 
-        this._generator = new CoreCardGenerator();
-        this._availableCards = new CoreCardSet();
+        let gen =  new CoreCardGenerator();
 
-        let gen = this._generator;
-        let available = this._availableCards;
-
-        available.add(gen.decks(2), gen.jokers(4));
+        this.state.available = new CoreCardSet(gen.decks(2), gen.jokers(4));
+        
+        let available = this.state.available;
         available.shuffle();
 
-        this.state = {
-            player1: new CoreCardSet(available.draw(8)),
-            commonArea: new CoreCardSet(),
-            player2: new CoreCardSet(available.draw(8)),
-        }
-
+        this.state.player1 = new CoreCardSet(available.draw(6));
+        this.state.player2 = new CoreCardSet(available.draw(6));
+        this.state.commonArea = new CoreCardSet();
+    
         this.state.player2.showBacks = true;
     }
 
     onDragEnd = result => {
-        const { source, destination, draggableId } = result;
+        const { source, destination } = result;
      
         if (!destination) {
             return;
         }
 
-        if (source.droppableId === destination.droppableId
-            && source.index === destination.index) {
-            return;
-        }
 
+        // Copy the state to be changed.  (Inefficient but OK when source === distination)
         let newState = {};
-        for (const [key, value] of Object.entries(this.state)) {
-            newState[key] = value.copy();
+        newState[source.droppableId] = this.state[source.droppableId].copy();
+        newState[destination.droppableId] = this.state[destination.droppableId].copy();
+        
+        let dragged = newState[source.droppableId].removeAt(source.index);
+        if(!dragged) {
+            throw Error('Cannot find card to move during drag');
         }
-
-        newState[source.droppableId].removeAt(source.index);
-        newState[destination.droppableId].addAt(destination.index, 
-            new CoreCard(parseInt(draggableId)));
+        newState[destination.droppableId].addAt(destination.index, dragged);
 
         this.setState(newState);
     }
 
     render() {
 
-        const cardSets = Object.entries(this.state).map(entry => {
-            const [name, coreCardSet] = entry;
+        const renderCardSet = name => {
+            let coreCardSet = this.state[name];
+            if(!(coreCardSet instanceof CoreCardSet)) {
+                throw Error(`Unrecognised card set name ${name}`);
+            }
             return <RenderCardSet id={name} key={name} coreCardSet={coreCardSet} showBack={coreCardSet.showBacks} />
-        });
+        };
 
 
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <div className="game"> 
-                    {
-                    [...cardSets]
-                    }
+                    {renderCardSet('player1')}
+                    {renderCardSet('commonArea')};
+                    {renderCardSet('player2')}
                 </div>
             </DragDropContext>
         );

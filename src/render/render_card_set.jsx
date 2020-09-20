@@ -5,6 +5,9 @@ import { RenderCard } from './render_card';
 class RenderCardSet extends React.Component {
     render() {
         const { coreCardSet, id } = this.props;
+        if(!coreCardSet) {
+            throw Error(`RenderCardSet required a CoreCardSet`);
+        }
 
         return (
             <Droppable

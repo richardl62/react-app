@@ -1,3 +1,5 @@
+import { CoreCard } from './core_card'; // For type checking
+
 class CoreCardSet {
     constructor(cards) {
         this._cards = cards ? cards : [];
@@ -21,10 +23,13 @@ class CoreCardSet {
     }
 
     removeAt(index) {
-        this._cards.splice(index, 1);
+        return this._cards.splice(index, 1)[0];
     }
 
     addAt(index, coreCard) {
+        if(!(coreCard instanceof CoreCard) ) {
+            throw Error(`Bad coreCard given to addAt ${coreCard}`)
+        }
         this._cards.splice(index, 0, coreCard);
     }
 
