@@ -2,7 +2,7 @@ import React from 'react';
 import { Droppable} from 'react-beautiful-dnd';
 import { RenderCard } from './render_card';
 
-class RenderHand extends React.Component {
+class RenderCardSet extends React.Component {
     render() {
         const { coreHand, id } = this.props;
 
@@ -27,4 +27,4 @@ class RenderHand extends React.Component {
     }
 }
 
-export { RenderHand };
+export { RenderCardSet };

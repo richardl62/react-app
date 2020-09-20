@@ -1,6 +1,6 @@
 import React from 'react';
-import { RenderHand } from './render';
-import { CoreHand, CoreDeck, CoreCard, CoreCardGenerator } from './core';
+import { CoreCard, CoreCardGenerator, CoreCardSet } from './core';
+import { RenderCardSet } from './render';
 import {DragDropContext} from 'react-beautiful-dnd';
 
 class Game extends React.Component {
@@ -9,7 +9,7 @@ class Game extends React.Component {
         super();
 
         this._generator = new CoreCardGenerator();
-        this._deck = new CoreDeck();
+        this._deck = new CoreCardSet();
 
         let gen = this._generator;
         let d = this._deck;
@@ -18,9 +18,9 @@ class Game extends React.Component {
         d.shuffle();
 
         this.state = {
-            player1: new CoreHand(d.draw(8)),
-            commonArea: new CoreHand(),
-            player2: new CoreHand(d.draw(8)),
+            player1: new CoreCardSet(d.draw(8)),
+            commonArea: new CoreCardSet(),
+            player2: new CoreCardSet(d.draw(8)),
         }
 
         this.state.player2.showBacks = true;
@@ -54,7 +54,7 @@ class Game extends React.Component {
 
         const hands = Object.entries(this.state).map(entry => {
             const [name, coreHand] = entry;
-            return <RenderHand id={name} key={name} coreHand={coreHand} showBack={coreHand.showBacks} />
+            return <RenderCardSet id={name} key={name} coreHand={coreHand} showBack={coreHand.showBacks} />
         });
 
 
