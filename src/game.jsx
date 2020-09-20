@@ -9,18 +9,18 @@ class Game extends React.Component {
         super();
 
         this._generator = new CoreCardGenerator();
-        this._deck = new CoreCardSet();
+        this._availableCards = new CoreCardSet();
 
         let gen = this._generator;
-        let d = this._deck;
+        let available = this._availableCards;
 
-        d.add(gen.decks(2), gen.jokers(4));
-        d.shuffle();
+        available.add(gen.decks(2), gen.jokers(4));
+        available.shuffle();
 
         this.state = {
-            player1: new CoreCardSet(d.draw(8)),
+            player1: new CoreCardSet(available.draw(8)),
             commonArea: new CoreCardSet(),
-            player2: new CoreCardSet(d.draw(8)),
+            player2: new CoreCardSet(available.draw(8)),
         }
 
         this.state.player2.showBacks = true;
@@ -52,9 +52,9 @@ class Game extends React.Component {
 
     render() {
 
-        const hands = Object.entries(this.state).map(entry => {
-            const [name, coreHand] = entry;
-            return <RenderCardSet id={name} key={name} coreHand={coreHand} showBack={coreHand.showBacks} />
+        const cardSets = Object.entries(this.state).map(entry => {
+            const [name, coreCardSet] = entry;
+            return <RenderCardSet id={name} key={name} coreCardSet={coreCardSet} showBack={coreCardSet.showBacks} />
         });
 
 
@@ -62,7 +62,7 @@ class Game extends React.Component {
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <div className="game"> 
                     {
-                    [...hands]
+                    [...cardSets]
                     }
                 </div>
             </DragDropContext>

@@ -4,7 +4,7 @@ import { RenderCard } from './render_card';
 
 class RenderCardSet extends React.Component {
     render() {
-        const { coreHand, id } = this.props;
+        const { coreCardSet, id } = this.props;
 
         return (
             <Droppable
@@ -12,11 +12,11 @@ class RenderCardSet extends React.Component {
                 direction="horizontal"
             >
                 {provided => (
-                    <div className="hand"
+                    <div className="card-set"
                         ref={provided.innerRef}
                         {...provided.droppableProp}
                     >
-                        {coreHand.cards.map((coreCard,index) =>
+                        {coreCardSet.cards.map((coreCard,index) =>
                             <RenderCard coreCard={coreCard} key={coreCard.id} index={index} showBack={this.props.showBack} />
                         )}
                         {provided.placeholder}

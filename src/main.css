@@ -16,7 +16,7 @@ body {
 }
 
 
-.hand {
+.card-set {
   display: inline-flex;
   align-items: center;
   margin: 2px;
