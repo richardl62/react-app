@@ -7,6 +7,9 @@ class RenderCard extends React.PureComponent {
 
   render() {
     const {coreCard, index, showBack} = this.props;
+    if(typeof(coreCard) !== "object") {
+      throw Error(`bad core card "${coreCard}" supplied to RenderCard`);
+    }
 
     const svg = showBack ? cardBackSvg : cardSvg(coreCard);
     const alt = showBack ? "card back" : coreCard.name(); 
