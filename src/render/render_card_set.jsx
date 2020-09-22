@@ -65,6 +65,7 @@ class RenderCardSet extends React.Component {
                         {...provided.droppableProp}
                     >
                         <InnerRender {...this.props} />
+                        {provided.placeholder}
                     </div>
                 )}
             </Droppable>

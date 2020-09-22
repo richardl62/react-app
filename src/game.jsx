@@ -14,7 +14,7 @@ class Game extends React.Component {
         this.state.available = new CoreCardSet(gen.decks(2), gen.jokers(4));
         
         let available = this.state.available;
-        available.shuffle();
+        //available.shuffle();
 
         this.state.player1 = available.draw(6);
         this.state.player2 = available.draw(6);
