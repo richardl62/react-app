@@ -1,6 +1,7 @@
 import React from 'react';
 import { Droppable} from 'react-beautiful-dnd';
 import { RenderCard } from './render_card';
+import { CoreCardSet } from '../core';
 
 function RenderEmpty() {
     return <div className="empty-card-set" />
@@ -9,6 +10,9 @@ function RenderEmpty() {
 
 function RenderSpread(props) {
     const { coreCardSet, showBack } = props;
+    if(!(coreCardSet instanceof CoreCardSet)) {
+        throw Error(`Bad core card set ${coreCardSet}`)
+    }
 
     return coreCardSet.cards.map(
         (coreCard,index) =>
@@ -18,13 +22,10 @@ function RenderSpread(props) {
 
 function RenderNoSpread(props) {
 
-    const { coreCardSet, showBack } = props;
-    const coreCard1 = coreCardSet.cards[0];
-    // const coreCard2 = coreCardSet.cards[1];
+    const { coreCardSet} = props;
 
     return <div className="card-set-no-spread">
-        <RenderCard coreCard={coreCard1} key={coreCard1.id} index={1} showBack={showBack} />
-        {/* <RenderCard coreCard={coreCard2} key={coreCard2.id} index={2} showBack={showBack} /> */}
+        <RenderSpread {...props} coreCardSet={coreCardSet.get(1)} />
     </div>;
 }
 

@@ -37,8 +37,8 @@ class CoreCardSet {
         return new CoreCardSet(this._cards.splice(0, num));
       }
 
-    slice(start, end) {
-        return new CoreCardSet(this._cards.slice(start, end));
+    get(num) {
+        return new CoreCardSet(this._cards.slice(0, num));
     }
 
     shuffle() {
