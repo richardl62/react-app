@@ -34,8 +34,12 @@ class CoreCardSet {
     }
 
     draw(num) {
-        return this._cards.splice(0, num);
+        return new CoreCardSet(this._cards.splice(0, num));
       }
+
+    slice(start, end) {
+        return new CoreCardSet(this._cards.slice(start, end));
+    }
 
     shuffle() {
         // Copied from richardl62.github.io\games\lib\tools\tools.js

@@ -16,8 +16,8 @@ class Game extends React.Component {
         let available = this.state.available;
         available.shuffle();
 
-        this.state.player1 = new CoreCardSet(available.draw(6));
-        this.state.player2 = new CoreCardSet(available.draw(6));
+        this.state.player1 = available.draw(6);
+        this.state.player2 = available.draw(6);
         this.state.commonArea = new CoreCardSet();
     
         this.state.player2.showBacks = true;
@@ -47,21 +47,25 @@ class Game extends React.Component {
 
     render() {
 
-        const renderCardSet = name => {
+        const RenderNamedSet = props => {
+            const { name }= props;
+
             let coreCardSet = this.state[name];
             if(!(coreCardSet instanceof CoreCardSet)) {
                 throw Error(`Unrecognised card set name ${name}`);
             }
-            return <RenderCardSet id={name} key={name} coreCardSet={coreCardSet} showBack={coreCardSet.showBacks} />
+            return <RenderCardSet {...props} id={name} key={name} coreCardSet={coreCardSet}
+                 showBack={coreCardSet.showBacks} />
         };
 
 
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <div className="game"> 
-                    {renderCardSet('player1')}
-                    {renderCardSet('commonArea')};
-                    {renderCardSet('player2')}
+                    <RenderNamedSet name='player1' />
+                    <RenderNamedSet name='available' spread="none" />
+                    <RenderNamedSet name='commonArea' />
+                    <RenderNamedSet name='player2' />
                 </div>
             </DragDropContext>
         );
