@@ -1,6 +1,6 @@
 import React from 'react';
 import { Droppable} from 'react-beautiful-dnd';
-import { RenderCard } from './render_card';
+import { RenderCard, RenderCardSimple } from './render_card';
 import { CoreCardSet } from '../core';
 
 function RenderEmpty() {
@@ -23,9 +23,21 @@ function RenderSpread(props) {
 function RenderNoSpread(props) {
 
     const { coreCardSet} = props;
+    const top = coreCardSet.cards[0];
+    const secondTop = coreCardSet.cards[1];
 
     return <div className="card-set-no-spread">
-        <RenderSpread {...props} coreCardSet={coreCardSet.get(1)} />
+        <RenderSpread {...props} coreCardSet={new CoreCardSet([top])} 
+            isDropDisabled={true}/>
+
+        <div className="card-set-no-spread-background">
+            {secondTop ?
+                    <RenderCardSimple {...props} coreCard={secondTop} />
+                    :
+                    <RenderEmpty {...props} />
+            }
+        </div>
+
     </div>;
 }
 
@@ -53,17 +65,19 @@ class RenderCardSet extends React.Component {
     
     render() {
 
-        const { id } = this.props;
+        const { id, spread, isDropDisabled} = this.props;
 
         return (
+
             <Droppable
                 droppableId={id}
                 direction="horizontal"
+                isDropDisabled={spread==="none" || isDropDisabled}
+
             >
                 {provided => (
                     <div className="card-set"
                         ref={provided.innerRef}
-                        {...provided.droppableProp}
                     >
                         <InnerRender {...this.props} />
                         {provided.placeholder}

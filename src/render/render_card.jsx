@@ -10,8 +10,10 @@ class RenderCardSimple extends React.PureComponent {
 
     const { coreCard, showBack, innerRef } = this.props;
     delete propsForDiv.coreCard;
+    delete propsForDiv.coreCardSet;
     delete propsForDiv.showBack;
     delete propsForDiv.innerRef;
+    delete propsForDiv.isDragDisabled;
 
     if (!coreCard instanceof CoreCard) {
       throw Error(`bad core card "${coreCard}" supplied to RenderCard`);
@@ -31,12 +33,13 @@ class RenderCardSimple extends React.PureComponent {
 class RenderCard extends React.PureComponent {
 
   render() {
-    const {coreCard, index} = this.props;
+    const {coreCard, index, isDragDisabled} = this.props;
  
     return (
       <Draggable
         draggableId={coreCard.id.toString()}
-        index={index}
+        index={index ? index : 0}
+        isDragDisabled={isDragDisabled}
       >
         {provided => (
           <RenderCardSimple

@@ -11,15 +11,15 @@ class Game extends React.Component {
 
         let gen =  new CoreCardGenerator();
 
-        this.state.available = new CoreCardSet(gen.decks(2), gen.jokers(4));
-        
-        let available = this.state.available;
-        //available.shuffle();
-
-        this.state.player1 = available.draw(6);
-        this.state.player2 = available.draw(6);
-        this.state.commonArea = new CoreCardSet();
+        let cards = new CoreCardSet(gen.decks(2), gen.jokers(4));
     
+
+        this.state.player1 = cards.draw(6);
+        this.state.player2 = cards.draw(6);
+        this.state.commonArea = new CoreCardSet();
+        
+        this.state.available = cards;
+
         this.state.player2.showBacks = true;
     }
 

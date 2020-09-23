@@ -5,6 +5,7 @@
 body {
   background-color: darkgreen;
   font-size: 40px;
+  --card-height: 297.36px;
 }
 
 .game {
@@ -19,7 +20,7 @@ body {
   width: 200px;
 }
 
-.card-set  {
+.card-set {
   display: inline-flex;
   align-items: center;
   margin: 2px;
@@ -29,24 +30,31 @@ body {
 
 .card-set-no-spread {
   position: relative;
-  box-shadow:     
-    /* The top layer shadow */
-    0 -1px 1px rgba(0,0,0,0.15),
-    /* The second layer */
-    0 -10px 0 -5px #eee,
-    /* The second layer shadow */
-    0 -10px 1px -4px rgba(0,0,0,0.15),
-    /* The third layer */
-    0 -20px 0 -10px #eee,
-    /* The third layer shadow */
-    0 -20px 1px -9px rgba(0,0,0,0.15);
+  height: var(--card-height);
+  z-index: 0;
+
   }
 
-/* .card-set-no-spread .card {
+.card-set-no-spread-background {
+  display: inline-block;
   position: absolute;
   top: 0;
   left: 0;
-} */
+  z-index: -1;
+
+  box-shadow:     
+  /* The top layer shadow */
+  0 -1px 1px rgba(0,0,0,0.15),
+  /* The second layer */
+  0 -10px 0 -5px #eee,
+  /* The second layer shadow */
+  0 -10px 1px -4px rgba(0,0,0,0.15),
+  /* The third layer */
+  0 -20px 0 -10px #eee,
+  /* The third layer shadow */
+  0 -20px 1px -9px rgba(0,0,0,0.15);
+}
+
 .empty-card-set {
   display: inline-flex;
   height: 258px;
