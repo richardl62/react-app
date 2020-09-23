@@ -2,16 +2,36 @@ import React from 'react';
 import {CoreCard} from "../core";
 import {Draggable} from 'react-beautiful-dnd';
 
-class RenderCard extends React.PureComponent {
+// No support for dragging
+class RenderCardSimple extends React.PureComponent {
 
   render() {
-    const {coreCard, index, showBack} = this.props;
-    if(!coreCard instanceof CoreCard) {
+    let propsForDiv = {...this.props};
+
+    const { coreCard, showBack, innerRef } = this.props;
+    delete propsForDiv.coreCard;
+    delete propsForDiv.showBack;
+    delete propsForDiv.innerRef;
+
+    if (!coreCard instanceof CoreCard) {
       throw Error(`bad core card "${coreCard}" supplied to RenderCard`);
     }
 
-    const svg = showBack ?  CoreCard.backSvg : coreCard.svg();
-    const alt = showBack ? "card back" : coreCard.name(); 
+    const svg = showBack ? CoreCard.backSvg : coreCard.svg();
+    const alt = showBack ? "card back" : coreCard.name();
+
+    return (
+      <div {...propsForDiv} ref={innerRef} className="card">
+        <img width="100%" height="auto" src={svg} alt={alt} />
+      </div>
+    );
+  }
+}
+
+class RenderCard extends React.PureComponent {
+
+  render() {
+    const {coreCard, index} = this.props;
  
     return (
       <Draggable
@@ -19,17 +39,18 @@ class RenderCard extends React.PureComponent {
         index={index}
       >
         {provided => (
-          <div className="card"
+          <RenderCardSimple
+            {...this.props}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
-            ref={provided.innerRef}
-          >       
-            <img width="100%" height="auto" src={svg} alt={alt} />
-          </div>
+            innerRef={provided.innerRef}
+          />       
         )}
       </Draggable>
     );
   }
 }
 
-export { RenderCard };
+export { RenderCard, 
+          RenderCardSimple  // Experimental - may not be needed with isDragDisabled 
+        };
