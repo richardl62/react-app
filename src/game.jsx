@@ -15,21 +15,37 @@ class Game extends React.Component {
     
 
         this.state.player1 = cards.draw(6);
-        this.state.player2 = cards.draw(6);
-        this.state.commonArea = new CoreCardSet();
-        
-        this.state.available = cards;
 
+        this.state.player2 = cards.draw(6);
         this.state.player2.showBacks = true;
+
+        this.state.commonArea = new CoreCardSet();
+        this.state.available = cards;
     }
 
-    onDragEnd = result => {
-        const { source, destination } = result;
+    onBeforeCapture = data => {
+        //console.log('onBeforeCapture', data);
+    };
+
+    onBeforeDragStart = data => {
+        // console.log('onBeforeDragStart', data);
+    };
+
+    onDragStart = data => {
+        // console.log('onDragStart', data);
+    };
+
+    onDragUpdate = data => {
+        // console.log('onDragUpdate', data);
+    };
+
+    onDragEnd = data => {
+        // console.log('onDragEnd v1')
+        const { source, destination } = data;
      
         if (!destination) {
             return;
         }
-
 
         // Copy the state to be changed.  (Inefficient but OK when source === distination)
         let newState = {};
@@ -49,18 +65,31 @@ class Game extends React.Component {
 
         const RenderNamedSet = props => {
             const { name }= props;
+            const coreCardSet = this.state[name];
 
-            let coreCardSet = this.state[name];
             if(!(coreCardSet instanceof CoreCardSet)) {
                 throw Error(`Unrecognised card set name ${name}`);
             }
-            return <RenderCardSet {...props} id={name} key={name} coreCardSet={coreCardSet}
-                 showBack={coreCardSet.showBacks} />
+
+            const extraProps = {
+                id: name, 
+                key: name,
+                coreCardSet: coreCardSet,
+                showBack: coreCardSet.showBacks,
+            }
+            return <RenderCardSet {...props} {...extraProps} />
         };
 
 
         return (
-            <DragDropContext onDragEnd={this.onDragEnd}>
+            <DragDropContext 
+                onBeforeCapture={this.onBeforeCapture}
+                onBeforeDragStart={this.onBeforeDragStart}
+                onDragStart={this.onDragStart}
+                onDragUpdate={this.onDragUpdate}
+  
+                onDragEnd={this.onDragEnd}
+            >
                 <div className="game"> 
                     <RenderNamedSet name='player1' />
                     <RenderNamedSet name='available' spread="none" />

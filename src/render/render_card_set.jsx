@@ -27,8 +27,7 @@ function RenderNoSpread(props) {
     const secondTop = coreCardSet.cards[1];
 
     return <div className="card-set-no-spread">
-        <RenderSpread {...props} coreCardSet={new CoreCardSet([top])} 
-            isDropDisabled={true}/>
+        <RenderSpread {...props} coreCardSet={new CoreCardSet([top])} />
 
         <div className="card-set-no-spread-background">
             {secondTop ?
@@ -64,15 +63,18 @@ function InnerRender(props) {
 class RenderCardSet extends React.Component {
     
     render() {
+        const { id, isDropDisabled, experimental} = this.props;
 
-        const { id, spread, isDropDisabled} = this.props;
+        if(experimental) {
+             return this.renderExperimental();
+        }
 
         return (
 
             <Droppable
                 droppableId={id}
                 direction="horizontal"
-                isDropDisabled={spread==="none" || isDropDisabled}
+                isDropDisabled={isDropDisabled}
 
             >
                 {provided => (
@@ -80,6 +82,40 @@ class RenderCardSet extends React.Component {
                         ref={provided.innerRef}
                     >
                         <InnerRender {...this.props} />
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
+        );
+    }
+
+    renderExperimental() {
+        const { id, coreCardSet, showBack, isDropDisabled} = this.props;
+        const topCard = coreCardSet.cards[0];
+        
+        function DraggingFromThis() {
+            console.log('DraggingFromThis');
+            return <RenderCard coreCard={topCard} key={topCard.id} index={1} showBack={showBack} />
+        };
+
+        const DraggingFromOther = () => {
+            console.log('DraggingFromOther');
+            return <RenderCardSimple coreCard={topCard} key={topCard.id} index={1} showBack={showBack} />
+        }
+        return (
+            <Droppable
+                droppableId={id}
+                direction="horizontal"
+                isDropDisabled={isDropDisabled}
+            >
+                {(provided, snapshot) => (
+                    <div className="card-set-experimental"
+                        ref={provided.innerRef}
+                    >
+                        {snapshot.draggingFromThisWith ?
+                            <DraggingFromThis /> :
+                            <DraggingFromOther />}
+                            <DraggingFromThis></DraggingFromThis>
                         {provided.placeholder}
                     </div>
                 )}
