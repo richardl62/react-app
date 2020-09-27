@@ -3,6 +3,7 @@ import { CoreCardGenerator, CoreCardSet } from './core';
 import { RenderCardSet } from './render';
 import { DragDropContext } from 'react-beautiful-dnd';
 
+
 class Game extends React.Component {
 
     constructor() {
@@ -10,20 +11,32 @@ class Game extends React.Component {
         this.state = {}
 
         let gen =  new CoreCardGenerator();
-
         let cards = new CoreCardSet(gen.decks(2), gen.jokers(4));
     
-
         this.state.player1 = cards.draw(6);
 
         this.state.player2 = cards.draw(6);
         this.state.player2.showBacks(true);
-
-        this.state.commonArea = new CoreCardSet();
-        this.state.commonArea.accessTopCardOnly(true);
         
         this.state.available = cards;
         this.state.available.accessTopCardOnly(true);
+
+        this.commonAreaDecks = [];
+        this.addCommonAreaDeck(this.state);
+
+    }
+
+    addCommonAreaDeck(state) {
+
+        let deck = new CoreCardSet();
+        this.commonAreaDecks.push(deck);
+
+        const deckNo = this.commonAreaDecks.length;
+        state["commonArea"+deckNo] = deck;
+    }
+
+    inCommonArea(deck) {
+        return this.commonAreaDecks.includes(deck);
     }
 
     onBeforeCapture = data => {
@@ -54,8 +67,11 @@ class Game extends React.Component {
         const draggedFromId = source.droppableId;
         const draggedToId = destination.droppableId;
 
-        let draggedFrom = this.state[draggedFromId].copy();
-        let draggedTo = this.state[draggedToId].copy();
+        const oldDragFrom = this.state[draggedFromId];
+        const oldDragTo = this.state[draggedToId];
+
+        let draggedFrom = oldDragFrom.copy();
+        let draggedTo = oldDragTo.copy();
 
         
         let dragged = draggedFrom.removeAt(source.index);
@@ -70,6 +86,11 @@ class Game extends React.Component {
         let changedState = {}
         changedState[draggedFromId] = draggedFrom;
         changedState[draggedToId] = draggedTo;
+
+        if(this.inCommonArea(oldDragTo) && oldDragTo.cards.length === 0) {
+            console.log('adding to common area');
+            this.addCommonAreaDeck(changedState);
+        }
         
         this.setState(changedState);
     }
@@ -105,7 +126,11 @@ class Game extends React.Component {
                 <div className="game"> 
                     <RenderNamedSet name='player1' />
                     <RenderNamedSet name='available' />
-                    <RenderNamedSet name='commonArea' />
+                    <RenderNamedSet name='commonArea1' />
+                    {this.state.commonArea2 ? 
+                        <RenderNamedSet name='commonArea2' /> :
+                        <div>Not yet created</div>
+                    }                    
                     <RenderNamedSet name='player2' />
                 </div>
             </DragDropContext>

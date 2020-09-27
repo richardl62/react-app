@@ -53,7 +53,7 @@ function InnerRender(props) {
         return <RenderEmpty {...props} />;
     }
 
-    if(coreCardSet.accessTopCardOnly()) {
+    if(coreCardSet.accessTopCardOnly) {
         return <RenderNoSpread {...props} />
     }
 
