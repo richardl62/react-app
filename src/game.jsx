@@ -17,10 +17,13 @@ class Game extends React.Component {
         this.state.player1 = cards.draw(6);
 
         this.state.player2 = cards.draw(6);
-        this.state.player2.showBacks = true;
+        this.state.player2.showBacks(true);
 
         this.state.commonArea = new CoreCardSet();
+        this.state.commonArea.accessTopCardOnly(true);
+        
         this.state.available = cards;
+        this.state.available.accessTopCardOnly(true);
     }
 
     onBeforeCapture = data => {
@@ -48,36 +51,45 @@ class Game extends React.Component {
         }
 
         // Copy the state to be changed.  (Inefficient but OK when source === distination)
-        let newState = {};
-        newState[source.droppableId] = this.state[source.droppableId].copy();
-        newState[destination.droppableId] = this.state[destination.droppableId].copy();
+        const draggedFromId = source.droppableId;
+        const draggedToId = destination.droppableId;
+
+        let draggedFrom = this.state[draggedFromId].copy();
+        let draggedTo = this.state[draggedToId].copy();
+
         
-        let dragged = newState[source.droppableId].removeAt(source.index);
+        let dragged = draggedFrom.removeAt(source.index);
         if(!dragged) {
             throw Error('Cannot find card to move during drag');
         }
-        newState[destination.droppableId].addAt(destination.index, dragged);
 
-        this.setState(newState);
+        const draggedToIndex = draggedTo.accessTopCardOnly ? 0 : destination.index;
+        draggedTo.addAt(draggedToIndex, dragged);
+
+
+        let changedState = {}
+        changedState[draggedFromId] = draggedFrom;
+        changedState[draggedToId] = draggedTo;
+        
+        this.setState(changedState);
     }
 
     render() {
 
         const RenderNamedSet = props => {
-            const { name }= props;
+            const { name } = props;
             const coreCardSet = this.state[name];
 
             if(!(coreCardSet instanceof CoreCardSet)) {
                 throw Error(`Unrecognised card set name ${name}`);
             }
 
-            const extraProps = {
-                id: name, 
-                key: name,
-                coreCardSet: coreCardSet,
-                showBack: coreCardSet.showBacks,
-            }
-            return <RenderCardSet {...props} {...extraProps} />
+
+            return <RenderCardSet 
+                id={name}
+                key={name}
+                coreCardSet={coreCardSet}
+            />
         };
 
 
@@ -92,7 +104,7 @@ class Game extends React.Component {
             >
                 <div className="game"> 
                     <RenderNamedSet name='player1' />
-                    <RenderNamedSet name='available' spread="none" />
+                    <RenderNamedSet name='available' />
                     <RenderNamedSet name='commonArea' />
                     <RenderNamedSet name='player2' />
                 </div>

@@ -3,15 +3,29 @@ import { CoreCard } from './core_card'; // For type checking
 class CoreCardSet {
     constructor(cards) {
         this._cards = cards ? cards : [];
-        this._showBacks = false;
+        this._props = {
+            showBacks: false,
+            accessTopCardOnly: false,
+        };
         Object.seal(this);
     }
 
     get cards() {return this._cards;}
 
-    get showBacks() {return this._showBacks;}
-    set showBacks(show) {this._showBacks = show;}
-    
+    showBacks(on) {
+        if(on !== undefined) {
+            this._props.showBacks = on;
+        }
+        return this._props.showBacks;
+    }
+
+    accessTopCardOnly(on) {
+        if(on !== undefined) {
+            this._props.accessTopCardOnly = on;
+        }
+        return this._props.accessTopCardOnly;
+    }
+
     add(...toAdd) {
         for (let item of toAdd) {
             if (Array.isArray(item)) {
@@ -55,7 +69,7 @@ class CoreCardSet {
     // Make an independent copy of this class
     copy() {
         let cp = new CoreCardSet(this._cards.map(c => c.copy()));
-        cp.showBacks = this.showBacks;
+        cp._props = {...this._props};
 
         return cp;
     }

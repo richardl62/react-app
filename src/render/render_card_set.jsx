@@ -9,14 +9,15 @@ function RenderEmpty() {
 
 
 function RenderSpread(props) {
-    const { coreCardSet, showBack } = props;
+    const { coreCardSet } = props;
     if(!(coreCardSet instanceof CoreCardSet)) {
         throw Error(`Bad core card set ${coreCardSet}`)
     }
 
     return coreCardSet.cards.map(
         (coreCard,index) =>
-        <RenderCard coreCard={coreCard} key={coreCard.id} index={index} showBack={showBack} />
+        <RenderCard coreCard={coreCard} key={coreCard.id} index={index} 
+            showBack={coreCardSet.showBacks()} />
     );
 }
 
@@ -42,7 +43,7 @@ function RenderNoSpread(props) {
 
 function InnerRender(props) {
  
-    const { coreCardSet, spread } = props;
+    const { coreCardSet } = props;
 
     if(!coreCardSet) {
         throw Error(`RenderCardSet required a CoreCardSet`);
@@ -52,7 +53,7 @@ function InnerRender(props) {
         return <RenderEmpty {...props} />;
     }
 
-    if(spread === "none") {
+    if(coreCardSet.accessTopCardOnly()) {
         return <RenderNoSpread {...props} />
     }
 
