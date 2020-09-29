@@ -6,22 +6,32 @@ class CoreCardSet {
         this._props = {
             showBacks: false,
             accessTopCardOnly: false,
+            name: null,
         };
+
+
         Object.seal(this);
     }
 
     get cards() {return this._cards;}
 
-    showBacks(on) {
-        if(on !== undefined) {
-            this._props.showBacks = on;
+    name(val) {
+        if(val !== undefined) {
+            this._props.name = val;
+        }
+        return this._props.name;
+    }
+
+    showBacks(val) {
+        if(val !== undefined) {
+            this._props.showBacks = val;
         }
         return this._props.showBacks;
     }
 
-    accessTopCardOnly(on) {
-        if(on !== undefined) {
-            this._props.accessTopCardOnly = on;
+    accessTopCardOnly(val) {
+        if(val !== undefined) {
+            this._props.accessTopCardOnly = val;
         }
         return this._props.accessTopCardOnly;
     }

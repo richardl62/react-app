@@ -3,36 +3,40 @@ import { CoreCardGenerator, CoreCardSet } from './core';
 import { RenderCardSet } from './render';
 import { DragDropContext } from 'react-beautiful-dnd';
 
+function addCoreCardSet(state, name, coreCardSet)
+    {
+       if(!(coreCardSet instanceof CoreCardSet)) {
+           throw Error(`parameter ${coreCardSet} is not a CoreCardSet`);
+       }
+       coreCardSet.name(name);
+        state[name] = coreCardSet;
+        
+        return coreCardSet;
+    }
 
 class Game extends React.Component {
 
     constructor() {
         super();
-        this.state = {}
+        this.state = {};
 
         let gen =  new CoreCardGenerator();
         let cards = new CoreCardSet(gen.decks(2), gen.jokers(4));
     
-        this.state.player1 = cards.draw(6);
+        addCoreCardSet(this.state, "player1", cards.draw(6));
+        addCoreCardSet(this.state, "player2", cards.draw(6)).showBacks(true);
+        addCoreCardSet(this.state, "available", cards).accessTopCardOnly(true);
 
-        this.state.player2 = cards.draw(6);
-        this.state.player2.showBacks(true);
         
-        this.state.available = cards;
-        this.state.available.accessTopCardOnly(true);
-
         this.commonAreaDecks = [];
-        this.addCommonAreaDeck(this.state);
-
+        this.extendCommonArea(this.state);
     }
 
-    addCommonAreaDeck(state) {
-
-        let deck = new CoreCardSet();
-        this.commonAreaDecks.push(deck);
-
+    extendCommonArea(state) {
         const deckNo = this.commonAreaDecks.length;
-        state["commonArea"+deckNo] = deck;
+
+        let deck = addCoreCardSet(state, "commonArea"+deckNo, new CoreCardSet());
+        this.commonAreaDecks.push(deck);
     }
 
     inCommonArea(deck) {
@@ -89,29 +93,13 @@ class Game extends React.Component {
 
         if(this.inCommonArea(oldDragTo) && oldDragTo.cards.length === 0) {
             console.log('adding to common area');
-            this.addCommonAreaDeck(changedState);
+            this.extendCommonArea(changedState);
         }
         
         this.setState(changedState);
     }
 
     render() {
-
-        const RenderNamedSet = props => {
-            const { name } = props;
-            const coreCardSet = this.state[name];
-
-            if(!(coreCardSet instanceof CoreCardSet)) {
-                throw Error(`Unrecognised card set name ${name}`);
-            }
-
-
-            return <RenderCardSet 
-                id={name}
-                key={name}
-                coreCardSet={coreCardSet}
-            />
-        };
 
 
         return (
@@ -124,14 +112,14 @@ class Game extends React.Component {
                 onDragEnd={this.onDragEnd}
             >
                 <div className="game"> 
-                    <RenderNamedSet name='player1' />
-                    <RenderNamedSet name='available' />
-                    <RenderNamedSet name='commonArea1' />
-                    {this.state.commonArea2 ? 
-                        <RenderNamedSet name='commonArea2' /> :
+                    <RenderCardSet coreCardSet={this.state.player1} />
+                    <RenderCardSet coreCardSet={this.state.available} />
+                    <RenderCardSet coreCardSet={this.state.commonArea0} />
+                    {this.state.commonArea1 ? 
+                        <RenderCardSet coreCardSet={this.state.commonArea1} /> :
                         <div>Not yet created</div>
                     }                    
-                    <RenderNamedSet name='player2' />
+                    <RenderCardSet coreCardSet={this.state.player2} />
                 </div>
             </DragDropContext>
         );
