@@ -64,7 +64,7 @@ function InnerRender(props) {
 class RenderCardSet extends React.Component {
     
     render() {
-        const { coreCardSet, isDropDisabled, experimental} = this.props;
+        const { coreCardSet, isDropDisabled, direction, experimental} = this.props;
 
         if(experimental) {
              return this.renderExperimental();
@@ -73,8 +73,8 @@ class RenderCardSet extends React.Component {
         return (
 
             <Droppable
+                direction={direction}
                 droppableId={coreCardSet.name()}
-                direction="horizontal"
                 isDropDisabled={isDropDisabled}
 
             >

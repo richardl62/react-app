@@ -3,44 +3,72 @@ import { CoreCardGenerator, CoreCardSet } from './core';
 import { RenderCardSet } from './render';
 import { DragDropContext } from 'react-beautiful-dnd';
 
-function addCoreCardSet(state, name, coreCardSet)
-    {
-       if(!(coreCardSet instanceof CoreCardSet)) {
-           throw Error(`parameter ${coreCardSet} is not a CoreCardSet`);
-       }
-       coreCardSet.name(name);
-        state[name] = coreCardSet;
-        
-        return coreCardSet;
+function addCoreCardSet(state, name, coreCardSet) {
+    if (!(coreCardSet instanceof CoreCardSet)) {
+        throw Error(`parameter ${coreCardSet} is not a CoreCardSet`);
     }
+    coreCardSet.name(name);
+    state[name] = coreCardSet;
+
+    return coreCardSet;
+}
+
+function CommonArea(props) {
+    const { coreCardSets } = props;
+    console.log("CommonArea card sets", coreCardSets);
+    console.log("CommonArea card set names", coreCardSets.map(set => set.name()));
+    console.log("CommonArea card set cards", coreCardSets.map(set => set.cards));
+
+
+    return (
+        <div className="common-area">
+            {coreCardSets.map((set, index) =>
+                <RenderCardSet key={set.name()} coreCardSet={set} direction="vertical" />
+            )}
+        </div>
+    );
+}
+
 
 class Game extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+
+        super(props);
         this.state = {};
+        this._commonAreaCardSetsNames = [];
 
         let gen =  new CoreCardGenerator();
-        let cards = new CoreCardSet(gen.decks(2), gen.jokers(4));
+        let cards = new CoreCardSet(gen.decks(1), gen.jokers(2));
     
         addCoreCardSet(this.state, "player1", cards.draw(6));
         addCoreCardSet(this.state, "player2", cards.draw(6)).showBacks(true);
         addCoreCardSet(this.state, "available", cards).accessTopCardOnly(true);
+    }
 
-        
-        this.commonAreaDecks = [];
-        this.extendCommonArea(this.state);
+    componentDidMount() {
+        this.setState(this.extendCommonArea({}));
     }
 
     extendCommonArea(state) {
-        const deckNo = this.commonAreaDecks.length;
+        const name = "commonArea" + this._commonAreaCardSetsNames.length;
 
-        let deck = addCoreCardSet(state, "commonArea"+deckNo, new CoreCardSet());
-        this.commonAreaDecks.push(deck);
+        let cardSet = addCoreCardSet(state, name, new CoreCardSet());
+        cardSet.accessTopCardOnly(true);
+
+        this._commonAreaCardSetsNames.push(name);
+
+        console.log("extended common area", cardSet.name(), cardSet.cards)
+
+        return state;
+    }
+
+    get commonAreaCardSets() {
+        return this._commonAreaCardSetsNames.map(name=>this.state[name]); 
     }
 
     inCommonArea(deck) {
-        return this.commonAreaDecks.includes(deck);
+        return this.commonAreaCardSets.includes(deck);
     }
 
     onBeforeCapture = data => {
@@ -83,7 +111,7 @@ class Game extends React.Component {
             throw Error('Cannot find card to move during drag');
         }
 
-        const draggedToIndex = draggedTo.accessTopCardOnly ? 0 : destination.index;
+        const draggedToIndex = draggedTo.accessTopCardOnly ? 0 :  destination.index;
         draggedTo.addAt(draggedToIndex, dragged);
 
 
@@ -92,7 +120,6 @@ class Game extends React.Component {
         changedState[draggedToId] = draggedTo;
 
         if(this.inCommonArea(oldDragTo) && oldDragTo.cards.length === 0) {
-            console.log('adding to common area');
             this.extendCommonArea(changedState);
         }
         
@@ -114,11 +141,9 @@ class Game extends React.Component {
                 <div className="game"> 
                     <RenderCardSet coreCardSet={this.state.player1} />
                     <RenderCardSet coreCardSet={this.state.available} />
-                    <RenderCardSet coreCardSet={this.state.commonArea0} />
-                    {this.state.commonArea1 ? 
-                        <RenderCardSet coreCardSet={this.state.commonArea1} /> :
-                        <div>Not yet created</div>
-                    }                    
+
+                    <CommonArea coreCardSets={this.commonAreaCardSets} />
+             
                     <RenderCardSet coreCardSet={this.state.player2} />
                 </div>
             </DragDropContext>

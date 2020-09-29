@@ -68,3 +68,8 @@ body {
 .playing-area {
   height: 400px;
 }
+
+.common-area {
+  display:flex;
+  border:2px red solid;
+}
