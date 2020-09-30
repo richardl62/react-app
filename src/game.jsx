@@ -2,7 +2,9 @@ import React from 'react';
 import { CoreCardGenerator, CoreCardSet } from './core';
 import { RenderCardSet } from './render';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { CommonArea } from './common_area';
+import { CommonArea, CoreCommonArea } from './common_area';
+
+let coreCommonArea = new CoreCommonArea();
 
 function addCoreCardSet(state, name, coreCardSet) {
     if (!(coreCardSet instanceof CoreCardSet)) {
@@ -19,41 +21,22 @@ class Game extends React.Component {
     constructor(props) {
 
         super(props);
-        this.state = {};
-        this._commonAreaCardSetsNames = [];
+
 
         let gen =  new CoreCardGenerator();
         let cards = new CoreCardSet(gen.decks(1), gen.jokers(2));
     
+        this.state = {};
         addCoreCardSet(this.state, "player1", cards.draw(6));
         addCoreCardSet(this.state, "player2", cards.draw(6)).showBacks(true);
         addCoreCardSet(this.state, "available", cards).accessTopCardOnly(true);
     }
 
     componentDidMount() {
-        this.setState(this.extendCommonArea({}));
+        this.setState(coreCommonArea.setInitialState());
     }
 
-    extendCommonArea(state) {
-        const name = "commonArea" + this._commonAreaCardSetsNames.length;
 
-        let cardSet = addCoreCardSet(state, name, new CoreCardSet());
-        cardSet.accessTopCardOnly(true);
-
-        this._commonAreaCardSetsNames.push(name);
-
-        console.log("extended common area", cardSet.name(), cardSet.cards)
-
-        return state;
-    }
-
-    get commonAreaCardSets() {
-        return this._commonAreaCardSetsNames.map(name=>this.state[name]); 
-    }
-
-    inCommonArea(deck) {
-        return this.commonAreaCardSets.includes(deck);
-    }
 
     onBeforeCapture = data => {
         //console.log('onBeforeCapture', data);
@@ -99,15 +82,13 @@ class Game extends React.Component {
         draggedTo.addAt(draggedToIndex, dragged);
 
 
-        let changedState = {}
-        changedState[draggedFromId] = draggedFrom;
-        changedState[draggedToId] = draggedTo;
+        let stateChange = {}
+        stateChange[draggedFromId] = draggedFrom;
+        stateChange[draggedToId] = draggedTo;
 
-        if(this.inCommonArea(oldDragTo) && oldDragTo.cards.length === 0) {
-            this.extendCommonArea(changedState);
-        }
-        
-        this.setState(changedState);
+        const commonAreaStateChange = coreCommonArea.processDragStateChange(stateChange);
+
+        this.setState({...stateChange, ...commonAreaStateChange});
     }
 
     render() {
@@ -126,9 +107,7 @@ class Game extends React.Component {
                     <RenderCardSet coreCardSet={this.state.player1} />
                     <RenderCardSet coreCardSet={this.state.available} />
 
-                    <CommonArea coreCardSetsNames={this._commonAreaCardSetsNames} 
-                        gameState={this.state}
-                    />
+                    <CommonArea coreCommonArea={coreCommonArea} gameState={this.state} />
              
                     <RenderCardSet coreCardSet={this.state.player2} />
                 </div>
