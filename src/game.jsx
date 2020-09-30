@@ -1,6 +1,6 @@
 import React from 'react';
 import { CoreCardGenerator, CoreCardSet } from './core';
-import { RenderCardSet } from './render';
+import { CardSet } from './render';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { CommonArea, CoreCommonArea } from './common_area';
 
@@ -104,12 +104,12 @@ class Game extends React.Component {
                 onDragEnd={this.onDragEnd}
             >
                 <div className="game"> 
-                    <RenderCardSet coreCardSet={this.state.player1} />
-                    <RenderCardSet coreCardSet={this.state.available} />
+                    <CardSet coreCardSet={this.state.player1} />
+                    <CardSet coreCardSet={this.state.available} />
 
                     <CommonArea coreCommonArea={coreCommonArea} gameState={this.state} />
              
-                    <RenderCardSet coreCardSet={this.state.player2} />
+                    <CardSet coreCardSet={this.state.player2} />
                 </div>
             </DragDropContext>
         );

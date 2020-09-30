@@ -1,2 +1,2 @@
-export { RenderCard } from './render/render_card';
-export { RenderCardSet } from './render/render_card_set';
+export { Card } from './render/render_card';
+export { CardSet } from './render/render_card_set';

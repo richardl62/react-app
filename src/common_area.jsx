@@ -1,6 +1,6 @@
 import React from 'react';
 import { CoreCardSet } from './core';
-import { RenderCardSet } from './render';
+import { CardSet } from './render';
 
 class CoreCommonArea {
     constructor() {
@@ -55,7 +55,7 @@ function CommonArea(props) {
     return (
         <div className="common-area">
             {coreCommonArea.cardSetNames.map(name =>    
-                <RenderCardSet key={name} coreCardSet={gameState[name]} direction="vertical" />
+                <CardSet key={name} coreCardSet={gameState[name]} direction="vertical" />
             )}
         </div>
     );

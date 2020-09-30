@@ -1,14 +1,14 @@
 import React from 'react';
 import { Droppable} from 'react-beautiful-dnd';
-import { RenderCard, RenderCardSimple } from './render_card';
+import { Card, CardSimple } from './render_card';
 import { CoreCardSet } from '../core';
 
-function RenderEmpty() {
+function Empty() {
     return <div className="empty-card-set" />
 }
 
 
-function RenderSpread(props) {
+function Spread(props) {
     const { coreCardSet } = props;
     if(!(coreCardSet instanceof CoreCardSet)) {
         throw Error(`Bad core card set ${coreCardSet}`)
@@ -16,52 +16,52 @@ function RenderSpread(props) {
 
     return coreCardSet.cards.map(
         (coreCard,index) =>
-        <RenderCard coreCard={coreCard} key={coreCard.id} index={index} 
+        <Card coreCard={coreCard} key={coreCard.id} index={index} 
             showBack={coreCardSet.showBacks()} />
     );
 }
 
-function RenderNoSpread(props) {
+function NoSpread(props) {
 
     const { coreCardSet} = props;
     const top = coreCardSet.cards[0];
     const secondTop = coreCardSet.cards[1];
 
     return <div className="card-set-no-spread">
-        <RenderSpread {...props} coreCardSet={new CoreCardSet([top])} />
+        <Spread {...props} coreCardSet={new CoreCardSet([top])} />
 
         <div className="card-set-no-spread-background">
             {secondTop ?
-                    <RenderCardSimple {...props} coreCard={secondTop} />
+                    <CardSimple {...props} coreCard={secondTop} />
                     :
-                    <RenderEmpty {...props} />
+                    <Empty {...props} />
             }
         </div>
 
     </div>;
 }
 
-function InnerRender(props) {
+function Inner(props) {
  
     const { coreCardSet } = props;
 
     if(!coreCardSet) {
-        throw Error(`RenderCardSet required a CoreCardSet`);
+        throw Error(`CardSet required a CoreCardSet`);
     }
     
     if(coreCardSet.cards.length === 0) {
-        return <RenderEmpty {...props} />;
+        return <Empty {...props} />;
     }
 
     if(coreCardSet.accessTopCardOnly) {
-        return <RenderNoSpread {...props} />
+        return <NoSpread {...props} />
     }
 
-    return <RenderSpread {...props} />
+    return <Spread {...props} />
 }
 
 
-class RenderCardSet extends React.Component {
+class CardSet extends React.Component {
     
     render() {
         const { coreCardSet, isDropDisabled, direction, experimental} = this.props;
@@ -82,7 +82,7 @@ class RenderCardSet extends React.Component {
                     <div className="card-set"
                         ref={provided.innerRef}
                     >
-                        <InnerRender {...this.props} />
+                        <Inner {...this.props} />
                         {provided.placeholder}
                     </div>
                 )}
@@ -96,12 +96,12 @@ class RenderCardSet extends React.Component {
         
         function DraggingFromThis() {
             console.log('DraggingFromThis');
-            return <RenderCard coreCard={topCard} key={topCard.id} index={1} showBack={showBack} />
+            return <Card coreCard={topCard} key={topCard.id} index={1} showBack={showBack} />
         };
 
         const DraggingFromOther = () => {
             console.log('DraggingFromOther');
-            return <RenderCardSimple coreCard={topCard} key={topCard.id} index={1} showBack={showBack} />
+            return <CardSimple coreCard={topCard} key={topCard.id} index={1} showBack={showBack} />
         }
         return (
             <Droppable
@@ -125,4 +125,4 @@ class RenderCardSet extends React.Component {
     }
 }
 
-export { RenderCardSet };
+export { CardSet };

@@ -3,7 +3,7 @@ import {CoreCard} from "../core";
 import {Draggable} from 'react-beautiful-dnd';
 
 // No support for dragging
-class RenderCardSimple extends React.PureComponent {
+class CardSimple extends React.PureComponent {
 
   render() {
     let propsForDiv = {...this.props};
@@ -16,7 +16,7 @@ class RenderCardSimple extends React.PureComponent {
     delete propsForDiv.isDragDisabled;
 
     if (!coreCard instanceof CoreCard) {
-      throw Error(`bad core card "${coreCard}" supplied to RenderCard`);
+      throw Error(`bad core card "${coreCard}" supplied to Card`);
     }
 
     const svg = showBack ? CoreCard.backSvg : coreCard.svg();
@@ -30,7 +30,7 @@ class RenderCardSimple extends React.PureComponent {
   }
 }
 
-class RenderCard extends React.PureComponent {
+class Card extends React.PureComponent {
 
   render() {
     const {coreCard, index, isDragDisabled} = this.props;
@@ -42,7 +42,7 @@ class RenderCard extends React.PureComponent {
         isDragDisabled={isDragDisabled}
       >
         {provided => (
-          <RenderCardSimple
+          <CardSimple
             {...this.props}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -54,6 +54,6 @@ class RenderCard extends React.PureComponent {
   }
 }
 
-export { RenderCard, 
-          RenderCardSimple  // Experimental - may not be needed with isDragDisabled 
+export { Card, 
+          CardSimple  // Experimental - may not be needed with isDragDisabled 
         };
