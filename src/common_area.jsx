@@ -1,6 +1,5 @@
 import React from 'react';
-import { CoreCardSet } from './core';
-import { CardSet } from './render';
+import { CardSet, CoreCardSet } from './tools';
 
 class CoreCommonArea {
     constructor() {

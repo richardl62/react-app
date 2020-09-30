@@ -1,5 +1,5 @@
 import React from 'react';
-import {CoreCard} from "../core";
+import {CoreCard} from "../tools";
 import {Draggable} from 'react-beautiful-dnd';
 
 // No support for dragging

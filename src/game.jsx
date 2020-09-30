@@ -1,6 +1,5 @@
 import React from 'react';
-import { CoreCardGenerator, CoreCardSet } from './core';
-import { CardSet } from './render';
+import { CardSet, CoreCardGenerator, CoreCardSet } from './tools';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { CommonArea, CoreCommonArea } from './common_area';
 

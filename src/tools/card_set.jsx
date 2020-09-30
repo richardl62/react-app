@@ -1,7 +1,7 @@
 import React from 'react';
 import { Droppable} from 'react-beautiful-dnd';
 import { Card, CardSimple } from './card';
-import { CoreCardSet } from '../core';
+import { CoreCardSet } from '../tools';
 
 function Empty() {
     return <div className="empty-card-set" />

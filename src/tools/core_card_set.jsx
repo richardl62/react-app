@@ -1,4 +1,4 @@
-import { CoreCard } from './core_card'; // For type checking
+import { CoreCard } from '../tools'; // For type checking
 
 class CoreCardSet {
     constructor(cards) {
