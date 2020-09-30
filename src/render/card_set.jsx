@@ -1,6 +1,6 @@
 import React from 'react';
 import { Droppable} from 'react-beautiful-dnd';
-import { Card, CardSimple } from './render_card';
+import { Card, CardSimple } from './card';
 import { CoreCardSet } from '../core';
 
 function Empty() {
