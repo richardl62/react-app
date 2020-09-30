@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/react-app/static/css/main.71a00dd5.chunk.css",
-    "main.js": "/react-app/static/js/main.226eb700.chunk.js",
-    "main.js.map": "/react-app/static/js/main.226eb700.chunk.js.map",
+    "main.js": "/react-app/static/js/main.b63046fd.chunk.js",
+    "main.js.map": "/react-app/static/js/main.b63046fd.chunk.js.map",
     "runtime-main.js": "/react-app/static/js/runtime-main.fa69c5e5.js",
     "runtime-main.js.map": "/react-app/static/js/runtime-main.fa69c5e5.js.map",
-    "static/js/2.c395d569.chunk.js": "/react-app/static/js/2.c395d569.chunk.js",
-    "static/js/2.c395d569.chunk.js.map": "/react-app/static/js/2.c395d569.chunk.js.map",
+    "static/js/2.5e6f5e33.chunk.js": "/react-app/static/js/2.5e6f5e33.chunk.js",
+    "static/js/2.5e6f5e33.chunk.js.map": "/react-app/static/js/2.5e6f5e33.chunk.js.map",
     "index.html": "/react-app/index.html",
-    "precache-manifest.9f378301205ea0e04d820ce20f7c1953.js": "/react-app/precache-manifest.9f378301205ea0e04d820ce20f7c1953.js",
+    "precache-manifest.e6222dc14eb72eeba63d50ec597716a2.js": "/react-app/precache-manifest.e6222dc14eb72eeba63d50ec597716a2.js",
     "service-worker.js": "/react-app/service-worker.js",
     "static/css/main.71a00dd5.chunk.css.map": "/react-app/static/css/main.71a00dd5.chunk.css.map",
-    "static/js/2.c395d569.chunk.js.LICENSE.txt": "/react-app/static/js/2.c395d569.chunk.js.LICENSE.txt",
+    "static/js/2.5e6f5e33.chunk.js.LICENSE.txt": "/react-app/static/js/2.5e6f5e33.chunk.js.LICENSE.txt",
     "static/media/BACK.svg": "/react-app/static/media/BACK.37ae6e1d.svg",
     "static/media/CLUB-1.svg": "/react-app/static/media/CLUB-1.89752b1f.svg",
     "static/media/CLUB-10.svg": "/react-app/static/media/CLUB-10.c58e8631.svg",
@@ -71,8 +71,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.fa69c5e5.js",
-    "static/js/2.c395d569.chunk.js",
+    "static/js/2.5e6f5e33.chunk.js",
     "static/css/main.71a00dd5.chunk.css",
-    "static/js/main.226eb700.chunk.js"
+    "static/js/main.b63046fd.chunk.js"
   ]
 }
